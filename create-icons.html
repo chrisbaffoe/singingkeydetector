@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <canvas id="icon192" width="192" height="192"></canvas>
+    <canvas id="icon512" width="512" height="512"></canvas>
+    <script>
+        function createIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#1a1a2e');
+            gradient.addColorStop(0.5, '#16213e');
+            gradient.addColorStop(1, '#0f3460');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Piano key symbol
+            ctx.fillStyle = '#00d4ff';
+            const keyWidth = size * 0.15;
+            const keyHeight = size * 0.5;
+            const startX = size * 0.2;
+            const startY = size * 0.25;
+            
+            // White keys
+            for (let i = 0; i < 4; i++) {
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(startX + (i * keyWidth * 1.1), startY, keyWidth, keyHeight);
+                ctx.strokeStyle = '#00d4ff';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(startX + (i * keyWidth * 1.1), startY, keyWidth, keyHeight);
+            }
+            
+            // Musical note
+            ctx.fillStyle = '#f1c40f';
+            ctx.font = `bold ${size * 0.3}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('♪', size * 0.5, size * 0.65);
+        }
+        
+        createIcon('icon192', 192);
+        createIcon('icon512', 512);
+        
+        // Download function
+        setTimeout(() => {
+            const canvas192 = document.getElementById('icon192');
+            const canvas512 = document.getElementById('icon512');
+            
+            canvas192.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'icon-192.png';
+                a.click();
+            });
+            
+            setTimeout(() => {
+                canvas512.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'icon-512.png';
+                    a.click();
+                });
+            }, 500);
+        }, 100);
+    </script>
+</body>
+</html>
